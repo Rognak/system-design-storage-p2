@@ -46,6 +46,7 @@ CREATE TABLE project_members (
 CREATE TABLE work_items (
     id UUID PRIMARY KEY,
     project_id UUID NOT NULL,
+    creator_id UUID NOT NULL,
     human_id TEXT NOT NULL,
     title TEXT NOT NULL,
     description TEXT,
@@ -57,12 +58,19 @@ CREATE TABLE work_items (
     FOREIGN KEY (project_id)
         REFERENCES projects(id),
 
+    FOREIGN KEY (creator_id)
+        REFERENCES users(user_id),
+
     UNIQUE (project_id, human_id)
 );
 
 
 CREATE INDEX idx_work_items_project
     ON work_items(project_id);
+
+
+CREATE INDEX idx_work_items_creator
+    ON work_items(creator_id);
 
 
 CREATE INDEX idx_work_items_status

@@ -53,6 +53,7 @@ VALUES (
 INSERT INTO work_items (
     id,
     project_id,
+    creator_id,
     human_id,
     title,
     description,
@@ -64,6 +65,7 @@ INSERT INTO work_items (
 VALUES (
     '33333333-3333-3333-3333-333333333333',
     '22222222-2222-2222-2222-222222222222',
+    '11111111-1111-1111-1111-111111111111',
     'TASK-1',
     'Сделать авторизацию',
     'Реализовать вход пользователя',
@@ -123,16 +125,19 @@ VALUES (
 
 
 -- 9. JOIN:
--- получить задачу вместе с оценкой
+-- получить задачу вместе с автором и оценкой
 SELECT
     wi.human_id,
     wi.title,
     wi.status,
+    u.username AS creator,
     e.storypoints,
     e.hours_estim,
     e.hours_spent,
     e.hours_remain
 FROM work_items wi
+JOIN users u
+    ON u.user_id = wi.creator_id
 LEFT JOIN work_item_estim e
     ON e.work_item_id = wi.id
 WHERE wi.id = '33333333-3333-3333-3333-333333333333';
